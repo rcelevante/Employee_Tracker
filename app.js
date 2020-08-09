@@ -44,63 +44,66 @@ function start() {
         name: "view",
         type: "list",
         message: "What would you like to do?",
-        choices: ["View All Employees",
-                  "View All Department",
-                  "View All Role",
-                  "View All Employees by Role", 
-                  "View All Employees by Manager",
-                  "Add Employees",
-                  "Remove Employees",
-                  "Update Employees Role",
-                  "Update Employees Manager",
-                  "View Budget"
-
-                ]
+        choices: [
+          "View All Employees",
+          "View All Department",
+          "View All Role",
+          "View All Employees by Role",
+          "View All Employees by Manager",
+          "Add Employee",
+          "Remove Employee",
+          "Update Employee's Role",
+          "Update Employee's Manager",
+          "View Company's Budget",
+          "Exit Application"
+        ],
       })
+  
+      .then(function (answer) {
+        switch (answer.view) {
+            case "View All Employees":
+                viewEmployees();
+                break;
 
-      .then(function(answer) {
-       
-        // VIEW EMPLOYEES
-        if (answer.view === "view all employees") {
-            viewEmployees();
-        }
-        else if(answer.view === "view all department") {
-            viewDepartment();
-        }
-        else if(answer.view === "view all role") {
-            viewRole();
-        }
+            case "View All Department":
+                viewDepartment();
+                break;
+        
+            case "View All Role":
+                viewRole();
+                break;
 
-        // VIEW EMP ROLE
-        else if(answer.view === "view all employees by role") {
-            viewEmployeesRole();
-        }
-        // VIEW EMP MANAGER
-        else if(answer.view === "view all employees by Manager") {
-            viewEmployeesManager();
-        }
-        // ADD EMP
-        else if(answer.view === "Add employees") {
-            Addemployees();
-        }
-        // REMOVE EMP
-        else if(answer.view === "Remove employees") {
-            Removeemployees();
-        }
-        // UPDATE  EMP ROLE
-        else if(answer.view === "Update employees role") {
-            UpEmployeesRole();
-        }
-        // UPDATE EMP MANAGER
-        else if(answer.view === "Update employees Manager") {
-            UpEmployeesManager();
-        }
-        // BUDGET
-        else if(answer.view === "View the total utilized budget of a departmen") {
-            viewBudget();
-      }  
-        else{
-          connection.end();
+            case "View All Employees by Role":
+                viewEmployeesRole();
+                break;
+            
+            case "View All Employees by Manager":
+                viewEmployeesManager();
+                break;
+            
+            case "Add Employee":
+                AddEmployees();
+                break;
+            
+            case "Remove Employee":
+                RemoveEmployees();
+                break;
+
+            case "Update Employee's Role":
+                UpEmployeesRole();
+                break;
+
+            case "Update Employee's Manager":
+                UpEmployeesManager();
+                break;
+
+            case "View Company's Budget":
+                viewBudget();
+                break;
+
+            case "Exit Application":
+                connection.end();
+                break;
         }
       });
   }
@@ -110,8 +113,8 @@ function viewEmployees() {
     console.log("Selecting all products...\n");
     connection.query("SELECT * FROM employee", function(err, res) {
       if (err) throw err;
-      console.log(res);
-      connection.end();
+      console.table(res);
+      start();
     });
 }
 
@@ -120,8 +123,8 @@ function viewDepartment() {
   console.log("Selecting all products...\n");
   connection.query("SELECT * FROM department", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }
 
@@ -130,8 +133,8 @@ function viewRole() {
   console.log("Selecting all products...\n");
   connection.query("SELECT * FROM role", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }
 
@@ -140,8 +143,8 @@ function viewEmployeesRole() {
     console.log("Selecting all products...\n");
     connection.query("SELECT role_id, first_name, last_name FROM employee ORDER BY role_id", function(err, res) {
       if (err) throw err;
-      console.log(res);
-      connection.end();
+      console.table(res);
+      start();
     });
 }
 
@@ -150,13 +153,13 @@ function viewEmployeesManager() {
   console.log("Selecting all products...\n");
   connection.query("SELECT Manager_id, first_name, last_name FROM employee ORDER BY Manager_id", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }
 
 //ADD EMP
-function Addemployees() {
+function AddEmployees() {
   inquirer
     .prompt([
       {
@@ -208,7 +211,7 @@ function Addemployees() {
 
 
 //REMOVE EMP
-function Removeemployees() {
+function RemoveEmployees() {
     inquirer
       .prompt([
         {
@@ -240,8 +243,8 @@ function UpEmployeesRole() {
   console.log("Selecting all products...\n");
   connection.query("UPDATE employee SET role_id = 1 WHERE role_id= 2", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }
 
@@ -250,8 +253,8 @@ function UpEmployeesManager() {
   console.log("Selecting all products...\n");
   connection.query("UPDATE employee SET Manager_id = 3 WHERE Manager_id = 5 ", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }
 
@@ -260,7 +263,7 @@ function viewBudget() {
   console.log("Selecting all products...\n");
   connection.query("SELECT department_id, sum(salary) as total_salary FROM role group BY department_id", function(err, res) {
     if (err) throw err;
-    console.log(res);
-    connection.end();
+    console.table(res);
+    start();
   });
 }

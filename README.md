@@ -37,6 +37,7 @@ SO THAT I can organize and plan my business
 
 # Preview
 Click to watch the video
+[![Watch the video](screenshot.png)](https://youtu.be/u1yoJCDjK4A)
 
 
 # Challenges
